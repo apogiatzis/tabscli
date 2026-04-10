@@ -45,18 +45,17 @@ pub fn list_sessions() -> Result<Vec<SessionMeta>> {
     for entry in fs::read_dir(&dir)? {
         let entry = entry?;
         let path = entry.path();
-        if path.extension().is_some_and(|e| e == "json") {
-            if let Ok(json) = fs::read_to_string(&path) {
-                if let Ok(session) = serde_json::from_str::<Session>(&json) {
-                    sessions.push(SessionMeta {
-                        name: session.name,
-                        tags: session.tags,
-                        tab_count: session.tabs.len(),
-                        created_at: session.created_at,
-                        updated_at: session.updated_at,
-                    });
-                }
-            }
+        if path.extension().is_some_and(|e| e == "json")
+            && let Ok(json) = fs::read_to_string(&path)
+            && let Ok(session) = serde_json::from_str::<Session>(&json)
+        {
+            sessions.push(SessionMeta {
+                name: session.name,
+                tags: session.tags,
+                tab_count: session.tabs.len(),
+                created_at: session.created_at,
+                updated_at: session.updated_at,
+            });
         }
     }
     sessions.sort_by(|a, b| b.updated_at.cmp(&a.updated_at));
@@ -97,17 +96,16 @@ pub fn list_snapshots(limit: usize) -> Result<Vec<SnapshotMeta>> {
     for entry in fs::read_dir(&dir)? {
         let entry = entry?;
         let path = entry.path();
-        if path.extension().is_some_and(|e| e == "json") {
-            if let Ok(json) = fs::read_to_string(&path) {
-                if let Ok(snap) = serde_json::from_str::<Snapshot>(&json) {
-                    snapshots.push(SnapshotMeta {
-                        id: snap.id,
-                        label: snap.label,
-                        tab_count: snap.tab_count,
-                        created_at: snap.created_at,
-                    });
-                }
-            }
+        if path.extension().is_some_and(|e| e == "json")
+            && let Ok(json) = fs::read_to_string(&path)
+            && let Ok(snap) = serde_json::from_str::<Snapshot>(&json)
+        {
+            snapshots.push(SnapshotMeta {
+                id: snap.id,
+                label: snap.label,
+                tab_count: snap.tab_count,
+                created_at: snap.created_at,
+            });
         }
     }
     snapshots.sort_by(|a, b| b.created_at.cmp(&a.created_at));

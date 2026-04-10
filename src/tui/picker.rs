@@ -2,16 +2,16 @@ use std::collections::HashSet;
 use std::io;
 
 use crossterm::{
-    event::{self, Event, KeyCode, KeyEventKind, KeyModifiers},
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
     ExecutableCommand,
+    event::{self, Event, KeyCode, KeyEventKind, KeyModifiers},
+    terminal::{EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode},
 };
 use ratatui::{
+    Frame, Terminal,
     layout::{Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
     text::{Line, Span},
     widgets::{Block, Borders, Clear, List, ListItem, Paragraph},
-    Frame, Terminal,
 };
 
 use crate::model::tab::Tab;
@@ -200,11 +200,7 @@ fn draw(f: &mut Frame, state: &PickerState) {
             let is_cursor = i == state.cursor;
 
             let marker = if state.multi {
-                if is_selected {
-                    "[x] "
-                } else {
-                    "[ ] "
-                }
+                if is_selected { "[x] " } else { "[ ] " }
             } else {
                 ""
             };

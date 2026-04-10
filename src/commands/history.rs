@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use anyhow::Result;
 use chrono::Utc;
-use comfy_table::{presets::UTF8_FULL_CONDENSED, Cell, Color, ContentArrangement, Table};
+use comfy_table::{Cell, Color, ContentArrangement, Table, presets::UTF8_FULL_CONDENSED};
 
 use crate::chrome::Browser;
 use crate::store::filesystem;

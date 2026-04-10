@@ -1,5 +1,5 @@
 use anyhow::Result;
-use comfy_table::{presets::UTF8_FULL_CONDENSED, Cell, Color, ContentArrangement, Table};
+use comfy_table::{Cell, Color, ContentArrangement, Table, presets::UTF8_FULL_CONDENSED};
 
 use crate::cli::SessionCommands;
 use crate::store::filesystem;
