@@ -91,3 +91,21 @@ jobs:
         with:
           generate_release_notes: true
           files: artifacts/*
+
+  test-install:
+    name: Test install (${{ matrix.os }})
+    needs: release
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run install script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash install.sh
+
+      - name: Verify binary runs
+        run: ~/.local/bin/tabscli --version

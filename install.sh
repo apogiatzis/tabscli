@@ -5,6 +5,12 @@ REPO="apogiatzis/tabscli"
 INSTALL_DIR="${HOME}/.local/bin"
 BINARY="tabscli"
 
+# Auth header for private repos (optional)
+AUTH_HEADER=()
+if [ -n "${GITHUB_TOKEN:-}" ]; then
+    AUTH_HEADER=(-H "Authorization: token ${GITHUB_TOKEN}")
+fi
+
 # Detect platform
 OS="$(uname -s)"
 ARCH="$(uname -m)"
@@ -24,7 +30,7 @@ esac
 TARGET="${arch}-${os}"
 
 # Get latest release tag
-VERSION="$(curl -fsSL "https://api.github.com/repos/${REPO}/releases/latest" | grep '"tag_name"' | cut -d'"' -f4)"
+VERSION="$(curl -fsSL "${AUTH_HEADER[@]}" "https://api.github.com/repos/${REPO}/releases/latest" | grep '"tag_name"' | cut -d'"' -f4)"
 if [ -z "${VERSION}" ]; then
     echo "Error: could not determine latest release" >&2
     exit 1
@@ -41,7 +47,7 @@ mkdir -p "${INSTALL_DIR}"
 TMP="$(mktemp -d)"
 trap 'rm -rf "${TMP}"' EXIT
 
-curl -fsSL "${URL}" -o "${TMP}/${BINARY}.tar.gz"
+curl -fsSL "${AUTH_HEADER[@]}" -L "${URL}" -o "${TMP}/${BINARY}.tar.gz"
 tar xzf "${TMP}/${BINARY}.tar.gz" -C "${TMP}"
 mv "${TMP}/${BINARY}" "${INSTALL_DIR}/${BINARY}"
 chmod +x "${INSTALL_DIR}/${BINARY}"
