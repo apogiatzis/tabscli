@@ -16,7 +16,7 @@ OS="$(uname -s)"
 ARCH="$(uname -m)"
 
 case "${OS}" in
-    Linux)  os="unknown-linux-gnu" ;;
+    Linux)  os="unknown-linux-musl" ;;
     Darwin) os="apple-darwin" ;;
     *)      echo "Error: unsupported OS '${OS}'" >&2; exit 1 ;;
 esac
