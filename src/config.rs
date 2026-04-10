@@ -18,8 +18,15 @@ fn project_dirs() -> Result<ProjectDirs> {
 /// Load configuration from the XDG config directory.
 /// Returns defaults if the config file doesn't exist.
 fn load_config() -> Result<Config> {
-    let proj = project_dirs()?;
-    let config_path = proj.config_dir().join("config.toml");
+    let config_dir = std::env::var("XDG_CONFIG_HOME")
+        .map(PathBuf::from)
+        .unwrap_or_else(|_| {
+            dirs_home()
+                .unwrap_or_else(|| PathBuf::from("."))
+                .join(".config")
+        })
+        .join("tabscli");
+    let config_path = config_dir.join("config.toml");
     if config_path.exists() {
         let contents = fs::read_to_string(&config_path).context("Failed to read config file")?;
         let config: Config = toml::from_str(&contents).context("Failed to parse config file")?;

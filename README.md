@@ -200,13 +200,13 @@ You can create session files by hand and restore them with `tabscli restore -f`.
 
 ## Configuration
 
-tabscli reads an optional config file from the XDG config directory:
+tabscli reads an optional config file from:
 
-| Platform | Path |
-|----------|------|
-| macOS | `~/Library/Application Support/tabscli/config.toml` |
-| Linux | `~/.config/tabscli/config.toml` |
-| Windows | `%APPDATA%/tabscli/config.toml` |
+```
+~/.config/tabscli/config.toml
+```
+
+Respects `$XDG_CONFIG_HOME` if set.
 
 ```toml
 # Override where sessions are stored
