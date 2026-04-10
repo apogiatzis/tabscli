@@ -13,19 +13,16 @@ tabscli --browser firefox close --duplicates
 
 Requires Firefox to be started with `--marionette` or a companion browser extension for native messaging.
 
-## `tabscli export` / `tabscli import`
+## Export & Import
 
-Portable HTML bookmark format for cross-browser compatibility.
+Export is handled by `tabscli list --format` (see [piping-and-composability.md](piping-and-composability.md)) — formats like `html`, `markdown`, and `org` cover the export use case without a separate command.
+
+Import would be a new `tabscli open -` command that reads URLs from stdin or a file:
 
 ```bash
-tabscli export > tabs.html             # Netscape bookmark format (works in all browsers)
-tabscli export --format markdown       # Markdown link list
-tabscli export --format org            # Org-mode links
-
-tabscli import tabs.html               # open tabs from bookmark file
+tabscli list -f html > bookmarks.html  # export (cross-browser importable)
+tabscli open - < urls.txt              # import URLs from a file
 ```
-
-The HTML bookmark format is universally supported — every browser can import it.
 
 ## `tabscli sync`
 
