@@ -22,11 +22,18 @@ A **CDP backend** (Chrome DevTools Protocol) is also available for cross-platfor
 
 ## Installation
 
-```bash
-# From source
-cargo install --path .
+### Pre-built binaries (recommended)
 
-# Binary will be available as `tabscli`
+```bash
+curl -fsSL https://raw.githubusercontent.com/apogiatzis/tabscli/main/install.sh | bash
+```
+
+This auto-detects your OS and architecture, downloads the latest release, and installs to `~/.local/bin`.
+
+### From source
+
+```bash
+cargo install --path .
 ```
 
 ## Quick Start
