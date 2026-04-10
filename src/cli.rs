@@ -13,6 +13,10 @@ pub struct Cli {
     #[arg(short, long, default_value = "chrome", global = true)]
     pub browser: BrowserTarget,
 
+    /// Query all supported browsers
+    #[arg(short, long, global = true)]
+    pub all: bool,
+
     /// Communication backend: applescript (default, macOS) or cdp
     #[arg(long, default_value = "applescript", global = true)]
     pub backend: Backend,
@@ -32,6 +36,20 @@ impl Cli {
             Backend::Cdp => Browser::cdp(self.port),
         }
     }
+
+    pub fn make_browsers(&self) -> Vec<Browser> {
+        if self.all {
+            BrowserTarget::all()
+                .iter()
+                .map(|t| match self.backend {
+                    Backend::Applescript => Browser::applescript(t.app_name()),
+                    Backend::Cdp => Browser::cdp(self.port),
+                })
+                .collect()
+        } else {
+            vec![self.make_browser()]
+        }
+    }
 }
 
 #[derive(ValueEnum, Clone, Default)]
@@ -44,7 +62,6 @@ pub enum BrowserTarget {
 }
 
 impl BrowserTarget {
-    /// Return the macOS application name for AppleScript.
     pub fn app_name(&self) -> &str {
         match self {
             BrowserTarget::Chrome => "Google Chrome",
@@ -52,6 +69,15 @@ impl BrowserTarget {
             BrowserTarget::Edge => "Microsoft Edge",
             BrowserTarget::Chromium => "Chromium",
         }
+    }
+
+    pub fn all() -> &'static [BrowserTarget] {
+        &[
+            BrowserTarget::Chrome,
+            BrowserTarget::Brave,
+            BrowserTarget::Edge,
+            BrowserTarget::Chromium,
+        ]
     }
 }
 

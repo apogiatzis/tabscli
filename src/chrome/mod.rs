@@ -5,6 +5,16 @@ pub mod types;
 use crate::model::tab::Tab;
 use anyhow::Result;
 
+pub async fn list_tabs_from_all(browsers: &[Browser]) -> Result<Vec<Tab>> {
+    let mut all_tabs = Vec::new();
+    for browser in browsers {
+        if let Ok(tabs) = browser.list_tabs().await {
+            all_tabs.extend(tabs);
+        }
+    }
+    Ok(all_tabs)
+}
+
 pub enum Browser {
     AppleScript(applescript::AppleScriptClient),
     Cdp(cdp::CdpClient),

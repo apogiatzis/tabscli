@@ -6,13 +6,13 @@ use crate::model::tab::Tab;
 use crate::output::format_tabs;
 
 pub async fn run(
-    browser: &Browser,
+    browsers: &[Browser],
     format: OutputFormat,
     domain: Option<String>,
     search: Option<String>,
     sort: SortField,
 ) -> Result<()> {
-    let mut tabs = browser.list_tabs().await?;
+    let mut tabs = crate::chrome::list_tabs_from_all(browsers).await?;
 
     // Filter by domain
     if let Some(ref d) = domain {

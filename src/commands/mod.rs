@@ -14,6 +14,7 @@ use anyhow::Result;
 
 pub async fn run(cli: Cli) -> Result<()> {
     let browser = cli.make_browser();
+    let browsers = cli.make_browsers();
 
     match cli.command {
         Some(Commands::List {
@@ -28,7 +29,7 @@ pub async fn run(cli: Cli) -> Result<()> {
             } else {
                 format
             };
-            list::run(&browser, fmt, domain, search, sort).await
+            list::run(&browsers, fmt, domain, search, sort).await
         }
         Some(Commands::Close {
             pattern,
@@ -43,7 +44,7 @@ pub async fn run(cli: Cli) -> Result<()> {
             file,
             tags,
             overwrite,
-        }) => save::run(&browser, name, file, tags, overwrite).await,
+        }) => save::run(&browsers, name, file, tags, overwrite).await,
         Some(Commands::Restore {
             name,
             file,
@@ -55,7 +56,7 @@ pub async fn run(cli: Cli) -> Result<()> {
             deduplicate,
             dry_run,
         }) => organize::run(&browser, by_domain, deduplicate, dry_run).await,
-        Some(Commands::Snapshot { label }) => snapshot::run(&browser, label).await,
+        Some(Commands::Snapshot { label }) => snapshot::run(&browsers, label).await,
         Some(Commands::History {
             limit,
             restore,
@@ -67,7 +68,7 @@ pub async fn run(cli: Cli) -> Result<()> {
         }
         None => {
             list::run(
-                &browser,
+                &browsers,
                 crate::cli::OutputFormat::Table,
                 None,
                 None,

@@ -9,13 +9,13 @@ use crate::model::tab::SavedTab;
 use crate::store::filesystem;
 
 pub async fn run(
-    browser: &Browser,
+    browsers: &[Browser],
     name: Option<String>,
     file: Option<String>,
     tags: Vec<String>,
     overwrite: bool,
 ) -> Result<()> {
-    let tabs = browser.list_tabs().await?;
+    let tabs = crate::chrome::list_tabs_from_all(browsers).await?;
     let saved_tabs: Vec<SavedTab> = tabs.iter().map(SavedTab::from).collect();
     let now = Utc::now();
 

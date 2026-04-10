@@ -6,13 +6,13 @@ use crate::model::session::Snapshot;
 use crate::model::tab::SavedTab;
 use crate::store::filesystem;
 
-pub async fn run(browser: &Browser, label: Option<String>) -> Result<()> {
-    create_snapshot(browser, label).await?;
+pub async fn run(browsers: &[Browser], label: Option<String>) -> Result<()> {
+    create_snapshot(browsers, label).await?;
     Ok(())
 }
 
-pub async fn create_snapshot(browser: &Browser, label: Option<String>) -> Result<()> {
-    let tabs = browser.list_tabs().await?;
+pub async fn create_snapshot(browsers: &[Browser], label: Option<String>) -> Result<()> {
+    let tabs = crate::chrome::list_tabs_from_all(browsers).await?;
     let now = Utc::now();
     let id = now.format("%Y%m%dT%H%M%S").to_string();
 
