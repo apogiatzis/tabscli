@@ -1,5 +1,7 @@
 # tabscli
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A fast CLI tool to manage Chrome browser tabs from the terminal. Built in Rust.
 
 ## Features
