@@ -105,7 +105,7 @@ end tell
     }
 
     pub async fn open_tab(&self, url: &str) -> Result<()> {
-        let escaped_url = url.replace('"', "\\\"");
+        let escaped_url = sanitize_applescript_string(url);
         let script = format!(
             r#"
 tell application "{app}"
@@ -136,7 +136,7 @@ end tell
     }
 
     pub async fn open_tab_in_window(&self, url: &str, window_id: &str) -> Result<()> {
-        let escaped_url = url.replace('"', "\\\"");
+        let escaped_url = sanitize_applescript_string(url);
         let script = format!(
             r#"
 tell application "{app}"
@@ -155,6 +155,12 @@ end tell
         run_osascript(&script).await?;
         Ok(())
     }
+}
+
+/// Sanitize a string for safe interpolation into an AppleScript quoted string.
+/// Escapes backslashes and double quotes to prevent injection.
+fn sanitize_applescript_string(s: &str) -> String {
+    s.replace('\\', "\\\\").replace('"', "\\\"")
 }
 
 async fn run_osascript(script: &str) -> Result<String> {

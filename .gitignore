@@ -7,6 +7,10 @@ brave_backup.json
 restore_brave.sh
 restore_tabs.sh
 
+# Secrets
+.env
+.env.*
+
 # OS files
 .DS_Store
 Thumbs.db

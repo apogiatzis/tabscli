@@ -4,8 +4,23 @@ use std::fs;
 use crate::config;
 use crate::model::session::{Session, Snapshot};
 
+/// Validate that a name is safe for use as a filename (no path traversal).
+fn validate_name(name: &str) -> Result<()> {
+    if name.is_empty() {
+        anyhow::bail!("Name cannot be empty");
+    }
+    if name.contains('/') || name.contains('\\') || name.contains("..") {
+        anyhow::bail!(
+            "Invalid name '{}': must not contain '/', '\\', or '..'",
+            name
+        );
+    }
+    Ok(())
+}
+
 /// Save a named session to disk.
 pub fn save_session(session: &Session) -> Result<()> {
+    validate_name(&session.name)?;
     let dir = config::sessions_dir()?;
     let path = dir.join(format!("{}.json", session.name));
     let json = serde_json::to_string_pretty(session)?;
@@ -15,6 +30,7 @@ pub fn save_session(session: &Session) -> Result<()> {
 
 /// Load a named session from disk.
 pub fn load_session(name: &str) -> Result<Session> {
+    validate_name(name)?;
     let dir = config::sessions_dir()?;
     let path = dir.join(format!("{}.json", name));
     let json = fs::read_to_string(&path).context(format!("Session '{}' not found", name))?;
@@ -49,6 +65,7 @@ pub fn list_sessions() -> Result<Vec<SessionMeta>> {
 
 /// Delete a saved session.
 pub fn delete_session(name: &str) -> Result<()> {
+    validate_name(name)?;
     let dir = config::sessions_dir()?;
     let path = dir.join(format!("{}.json", name));
     fs::remove_file(&path).context(format!("Session '{}' not found", name))?;
