@@ -1,0 +1,33 @@
+[package]
+name = "tabs-cli"
+version = "0.1.0"
+edition = "2021"
+description = "A CLI tool to manage Chrome browser tabs"
+authors = ["Antreas Pogiatzis"]
+license = "MIT"
+repository = "https://github.com/apogiatzis/tabs-cli"
+homepage = "https://github.com/apogiatzis/tabs-cli"
+readme = "README.md"
+keywords = ["chrome", "tabs", "cli", "browser", "productivity"]
+categories = ["command-line-utilities"]
+
+[[bin]]
+name = "tabscli"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+tokio = { version = "1", features = ["full"] }
+reqwest = { version = "0.12", features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+chrono = { version = "0.4", features = ["serde"] }
+comfy-table = "7"
+anyhow = "1"
+url = "2"
+regex = "1"
+directories = "6"
+toml = "0.8"
+ratatui = "0.29"
+crossterm = "0.28"
+nucleo = "0.5"

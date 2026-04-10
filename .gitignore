@@ -1,0 +1,19 @@
+/target
+
+# Personal backup files
+*.tsv
+*.bak
+brave_backup.json
+restore_brave.sh
+restore_tabs.sh
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
