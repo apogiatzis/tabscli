@@ -6,9 +6,16 @@ use crate::model::tab::Tab;
 use anyhow::Result;
 
 pub async fn list_tabs_from_all(browsers: &[Browser]) -> Result<Vec<Tab>> {
+    let multi = browsers.len() > 1;
     let mut all_tabs = Vec::new();
     for browser in browsers {
-        if let Ok(tabs) = browser.list_tabs().await {
+        if let Ok(mut tabs) = browser.list_tabs().await {
+            if multi {
+                let name = browser.name().to_string();
+                for tab in &mut tabs {
+                    tab.browser = Some(name.clone());
+                }
+            }
             all_tabs.extend(tabs);
         }
     }
@@ -21,7 +28,13 @@ pub enum Browser {
 }
 
 impl Browser {
-    /// Create an AppleScript browser backend targeting the given app.
+    pub fn name(&self) -> &str {
+        match self {
+            Browser::AppleScript(c) => &c.app_name,
+            Browser::Cdp(_) => "CDP",
+        }
+    }
+
     pub fn applescript(app_name: &str) -> Self {
         Browser::AppleScript(applescript::AppleScriptClient::new(app_name))
     }

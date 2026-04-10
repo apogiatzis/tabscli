@@ -4,7 +4,7 @@ use tokio::process::Command;
 use crate::model::tab::Tab;
 
 pub struct AppleScriptClient {
-    app_name: String,
+    pub(crate) app_name: String,
 }
 
 impl AppleScriptClient {
@@ -59,6 +59,7 @@ end tell
                     index: idx,
                     title: parts[1].to_string(),
                     url: parts[2].to_string(),
+                    browser: None,
                 });
             }
         }

@@ -6,14 +6,12 @@ use crate::chrome::types::CdpTab;
 /// A browser tab.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Tab {
-    /// CDP target ID (UUID string).
     pub id: String,
-    /// Tab index (0-based, order from CDP).
     pub index: usize,
-    /// Page title.
     pub title: String,
-    /// Page URL.
     pub url: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub browser: Option<String>,
 }
 
 impl Tab {
@@ -23,6 +21,7 @@ impl Tab {
             index,
             title: cdp.title,
             url: cdp.url,
+            browser: None,
         }
     }
 

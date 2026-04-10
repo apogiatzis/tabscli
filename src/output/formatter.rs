@@ -13,27 +13,51 @@ pub fn format_tabs(tabs: &[Tab], format: &OutputFormat) -> String {
 }
 
 fn format_table(tabs: &[Tab]) -> String {
+    let show_browser = tabs.iter().any(|t| t.browser.is_some());
+
     let mut table = Table::new();
     table
         .load_preset(UTF8_FULL_CONDENSED)
-        .set_content_arrangement(ContentArrangement::Dynamic)
-        .set_header(vec![
+        .set_content_arrangement(ContentArrangement::Dynamic);
+
+    if show_browser {
+        table.set_header(vec![
+            Cell::new("#").fg(Color::DarkCyan),
+            Cell::new("Browser").fg(Color::DarkCyan),
+            Cell::new("Title").fg(Color::DarkCyan),
+            Cell::new("Domain").fg(Color::DarkCyan),
+            Cell::new("URL").fg(Color::DarkCyan),
+        ]);
+    } else {
+        table.set_header(vec![
             Cell::new("#").fg(Color::DarkCyan),
             Cell::new("Title").fg(Color::DarkCyan),
             Cell::new("Domain").fg(Color::DarkCyan),
             Cell::new("URL").fg(Color::DarkCyan),
         ]);
+    }
 
     for (i, tab) in tabs.iter().enumerate() {
         let domain = tab.domain();
         let title = truncate(&tab.title, 50);
         let url = truncate(&tab.url, 60);
-        table.add_row(vec![
-            Cell::new(i + 1),
-            Cell::new(title),
-            Cell::new(domain).fg(Color::Green),
-            Cell::new(url).fg(Color::DarkGrey),
-        ]);
+        if show_browser {
+            let browser = tab.browser.as_deref().unwrap_or("");
+            table.add_row(vec![
+                Cell::new(i + 1),
+                Cell::new(browser).fg(Color::Cyan),
+                Cell::new(title),
+                Cell::new(domain).fg(Color::Green),
+                Cell::new(url).fg(Color::DarkGrey),
+            ]);
+        } else {
+            table.add_row(vec![
+                Cell::new(i + 1),
+                Cell::new(title),
+                Cell::new(domain).fg(Color::Green),
+                Cell::new(url).fg(Color::DarkGrey),
+            ]);
+        }
     }
 
     table.to_string()
