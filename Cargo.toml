@@ -1,6 +1,6 @@
 [package]
 name = "tabscli"
-version = "0.1.0"
+version = "0.1.2"
 edition = "2024"
 description = "A CLI tool to manage Chrome browser tabs"
 authors = ["Antreas Pogiatzis"]
