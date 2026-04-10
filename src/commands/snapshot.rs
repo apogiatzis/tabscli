@@ -28,7 +28,9 @@ pub async fn create_snapshot(browser: &Browser, label: Option<String>) -> Result
     };
 
     filesystem::save_snapshot(&snapshot)?;
-    let label_str = label.map(|l| format!(", label: \"{}\"", l)).unwrap_or_default();
+    let label_str = label
+        .map(|l| format!(", label: \"{}\"", l))
+        .unwrap_or_default();
     println!("Snapshot saved: {} ({} tabs{})", id, tab_count, label_str);
     Ok(())
 }

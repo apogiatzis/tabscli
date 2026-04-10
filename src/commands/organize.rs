@@ -5,7 +5,12 @@ use anyhow::Result;
 use crate::chrome::Browser;
 use crate::model::tab::Tab;
 
-pub async fn run(browser: &Browser, by_domain: bool, deduplicate: bool, dry_run: bool) -> Result<()> {
+pub async fn run(
+    browser: &Browser,
+    by_domain: bool,
+    deduplicate: bool,
+    dry_run: bool,
+) -> Result<()> {
     let tabs = browser.list_tabs().await?;
 
     if !by_domain && !deduplicate {

@@ -2,8 +2,8 @@ pub mod applescript;
 pub mod cdp;
 pub mod types;
 
-use anyhow::Result;
 use crate::model::tab::Tab;
+use anyhow::Result;
 
 pub enum Browser {
     AppleScript(applescript::AppleScriptClient),
@@ -66,9 +66,7 @@ impl Browser {
     pub async fn open_tab_in_window(&self, url: &str, window_id: &str) -> Result<()> {
         match self {
             Browser::AppleScript(c) => c.open_tab_in_window(url, window_id).await,
-            Browser::Cdp(_) => {
-                self.open_tab(url).await
-            }
+            Browser::Cdp(_) => self.open_tab(url).await,
         }
     }
 }

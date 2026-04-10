@@ -60,7 +60,9 @@ pub async fn run(
     }
 
     // Auto-snapshot before closing
-    if let Err(e) = crate::commands::snapshot::create_snapshot(browser, Some("pre-close".to_string())).await {
+    if let Err(e) =
+        crate::commands::snapshot::create_snapshot(browser, Some("pre-close".to_string())).await
+    {
         eprintln!("Warning: auto-snapshot failed: {}", e);
     }
 

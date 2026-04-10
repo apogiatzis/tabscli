@@ -44,8 +44,10 @@ pub async fn run(
 fn sort_tabs(tabs: &mut [Tab], sort: &SortField) {
     match sort {
         SortField::Window => {} // Already in window order
-        SortField::Title => tabs.sort_by(|a, b| a.title.to_lowercase().cmp(&b.title.to_lowercase())),
+        SortField::Title => {
+            tabs.sort_by(|a, b| a.title.to_lowercase().cmp(&b.title.to_lowercase()))
+        }
         SortField::Url => tabs.sort_by(|a, b| a.url.cmp(&b.url)),
-        SortField::Domain => tabs.sort_by(|a, b| a.domain().cmp(&b.domain())),
+        SortField::Domain => tabs.sort_by_key(|a| a.domain()),
     }
 }

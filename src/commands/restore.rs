@@ -4,7 +4,12 @@ use crate::chrome::Browser;
 use crate::model::session::Session;
 use crate::store::filesystem;
 
-pub async fn run(browser: &Browser, name: Option<String>, file: Option<String>, new_window: bool) -> Result<()> {
+pub async fn run(
+    browser: &Browser,
+    name: Option<String>,
+    file: Option<String>,
+    new_window: bool,
+) -> Result<()> {
     let session = match (name, file) {
         (_, Some(path)) => {
             let json = std::fs::read_to_string(&path)
@@ -17,7 +22,11 @@ pub async fn run(browser: &Browser, name: Option<String>, file: Option<String>, 
         (None, None) => anyhow::bail!("Provide a session name or --file <path>"),
     };
 
-    println!("Restoring session '{}' ({} tabs)...", session.name, session.tabs.len());
+    println!(
+        "Restoring session '{}' ({} tabs)...",
+        session.name,
+        session.tabs.len()
+    );
 
     let window_id = if new_window {
         Some(browser.new_window().await?)
@@ -44,6 +53,10 @@ pub async fn run(browser: &Browser, name: Option<String>, file: Option<String>, 
         }
     }
 
-    println!("Opened {} tab(s){}.", opened, if new_window { " in new window" } else { "" });
+    println!(
+        "Opened {} tab(s){}.",
+        opened,
+        if new_window { " in new window" } else { "" }
+    );
     Ok(())
 }

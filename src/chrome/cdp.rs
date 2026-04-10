@@ -20,12 +20,9 @@ impl CdpClient {
     /// List all open browser tabs (filters to type "page").
     pub async fn list_tabs(&self) -> Result<Vec<Tab>> {
         let url = format!("{}/json", self.base_url);
-        let resp = self
-            .client
-            .get(&url)
-            .send()
-            .await
-            .context("Failed to connect to Chrome DevTools. Is Chrome running with --remote-debugging-port?")?;
+        let resp = self.client.get(&url).send().await.context(
+            "Failed to connect to Chrome DevTools. Is Chrome running with --remote-debugging-port?",
+        )?;
 
         let cdp_tabs: Vec<CdpTab> = resp
             .json()
@@ -74,7 +71,10 @@ impl CdpClient {
             .await
             .context("Failed to open new tab")?;
 
-        let tab: CdpTab = resp.json().await.context("Failed to parse new tab response")?;
+        let tab: CdpTab = resp
+            .json()
+            .await
+            .context("Failed to parse new tab response")?;
         Ok(tab)
     }
 }

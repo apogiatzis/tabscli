@@ -158,7 +158,7 @@ fn draw(f: &mut Frame, state: &PickerState) {
         .direction(Direction::Vertical)
         .constraints([
             Constraint::Length(3), // Search input
-            Constraint::Min(1),   // Tab list
+            Constraint::Min(1),    // Tab list
             Constraint::Length(1), // Help line
         ])
         .split(area);
@@ -168,7 +168,12 @@ fn draw(f: &mut Frame, state: &PickerState) {
     let input_text = format!("> {}", state.query);
     let input = Paragraph::new(Line::from(vec![
         Span::styled(&input_text, Style::default().fg(Color::Yellow)),
-        Span::styled("_", Style::default().fg(Color::Yellow).add_modifier(Modifier::SLOW_BLINK)),
+        Span::styled(
+            "_",
+            Style::default()
+                .fg(Color::Yellow)
+                .add_modifier(Modifier::SLOW_BLINK),
+        ),
         Span::raw(" ".repeat(chunks[0].width as usize)),
         Span::styled(&counter, Style::default().fg(Color::DarkGray)),
     ]))
@@ -195,17 +200,27 @@ fn draw(f: &mut Frame, state: &PickerState) {
             let is_cursor = i == state.cursor;
 
             let marker = if state.multi {
-                if is_selected { "[x] " } else { "[ ] " }
+                if is_selected {
+                    "[x] "
+                } else {
+                    "[ ] "
+                }
             } else {
                 ""
             };
 
             let prefix = if is_cursor { "> " } else { "  " };
             let domain = tab.domain();
-            let title = truncate(&tab.title, (chunks[1].width as usize).saturating_sub(domain.len() + marker.len() + prefix.len() + 4));
+            let title = truncate(
+                &tab.title,
+                (chunks[1].width as usize)
+                    .saturating_sub(domain.len() + marker.len() + prefix.len() + 4),
+            );
 
             let style = if is_cursor {
-                Style::default().fg(Color::White).add_modifier(Modifier::BOLD)
+                Style::default()
+                    .fg(Color::White)
+                    .add_modifier(Modifier::BOLD)
             } else if is_selected {
                 Style::default().fg(Color::Cyan)
             } else {

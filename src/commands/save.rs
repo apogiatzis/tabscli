@@ -22,7 +22,10 @@ pub async fn run(
     match file {
         Some(path) => {
             if !overwrite && Path::new(&path).exists() {
-                anyhow::bail!("File '{}' already exists. Use --overwrite to replace it.", path);
+                anyhow::bail!(
+                    "File '{}' already exists. Use --overwrite to replace it.",
+                    path
+                );
             }
             let session_name = name.unwrap_or_else(|| {
                 Path::new(&path)
@@ -43,7 +46,8 @@ pub async fn run(
             println!("Saved {} tabs to {}", tabs.len(), path);
         }
         None => {
-            let name = name.ok_or_else(|| anyhow::anyhow!("Provide a session name or --file <path>"))?;
+            let name =
+                name.ok_or_else(|| anyhow::anyhow!("Provide a session name or --file <path>"))?;
             if !overwrite && filesystem::load_session(&name).is_ok() {
                 anyhow::bail!(
                     "Session '{}' already exists. Use --overwrite to replace it.",

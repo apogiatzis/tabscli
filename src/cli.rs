@@ -3,7 +3,10 @@ use clap::{Parser, Subcommand, ValueEnum};
 use crate::chrome::Browser;
 
 #[derive(Parser)]
-#[command(name = "tabscli", about = "Manage Chromium browser tabs from the terminal")]
+#[command(
+    name = "tabscli",
+    about = "Manage Chromium browser tabs from the terminal"
+)]
 #[command(version)]
 pub struct Cli {
     /// Target browser

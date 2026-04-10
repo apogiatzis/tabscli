@@ -1,7 +1,7 @@
 use anyhow::Result;
 
-use crate::cli::SelectAction;
 use crate::chrome::Browser;
+use crate::cli::SelectAction;
 use crate::tui::picker;
 
 pub async fn run(browser: &Browser, action: SelectAction, multi: bool) -> Result<()> {
