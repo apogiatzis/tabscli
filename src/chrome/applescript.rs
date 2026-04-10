@@ -14,7 +14,21 @@ impl AppleScriptClient {
         }
     }
 
+    pub async fn is_running(&self) -> bool {
+        let script = format!(
+            r#"tell application "System Events" to (name of processes) contains "{app}""#,
+            app = self.app_name
+        );
+        run_osascript(&script)
+            .await
+            .map(|s| s.trim() == "true")
+            .unwrap_or(false)
+    }
+
     pub async fn list_tabs(&self) -> Result<Vec<Tab>> {
+        if !self.is_running().await {
+            anyhow::bail!("{} is not running", self.app_name);
+        }
         let script = format!(
             r#"
 tell application "{app}"
