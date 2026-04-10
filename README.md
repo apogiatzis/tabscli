@@ -198,9 +198,29 @@ Sessions are stored as JSON and are portable across machines:
 
 You can create session files by hand and restore them with `tabscli restore -f`.
 
+## Configuration
+
+tabscli reads an optional config file from the XDG config directory:
+
+| Platform | Path |
+|----------|------|
+| macOS | `~/Library/Application Support/tabscli/config.toml` |
+| Linux | `~/.config/tabscli/config.toml` |
+| Windows | `%APPDATA%/tabscli/config.toml` |
+
+```toml
+# Override where sessions are stored
+sessions_dir = "~/Dropbox/tabscli/sessions"
+
+# Override where snapshots are stored
+snapshots_dir = "~/Dropbox/tabscli/snapshots"
+```
+
+Both fields are optional. Paths support `~` expansion. If the config file doesn't exist, defaults are used.
+
 ## Data Storage
 
-Sessions and snapshots are stored as JSON files in platform-specific directories:
+By default, sessions and snapshots are stored as JSON files in platform-specific directories:
 
 | Platform | Path |
 |----------|------|
@@ -217,6 +237,8 @@ tabscli/
     20260407T151200.json
     20260407T140000.json
 ```
+
+These paths can be overridden via the [config file](#configuration).
 
 ## Tab Recovery
 
