@@ -5,7 +5,7 @@ use std::path::PathBuf;
 /// Return the data directory for tabs-cli.
 /// Creates it if it doesn't exist.
 pub fn data_dir() -> Result<PathBuf> {
-    let proj = ProjectDirs::from("", "", "tabs-cli")
+    let proj = ProjectDirs::from("", "", "tabscli")
         .ok_or_else(|| anyhow::anyhow!("Could not determine data directory"))?;
     let dir = proj.data_dir().to_path_buf();
     std::fs::create_dir_all(&dir)?;

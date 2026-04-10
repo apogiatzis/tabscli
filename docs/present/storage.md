@@ -6,12 +6,12 @@ Data is stored as JSON files in platform-specific directories using the `directo
 
 | Platform | Path |
 |----------|------|
-| macOS | `~/Library/Application Support/tabs-cli/` |
-| Linux | `~/.local/share/tabs-cli/` |
-| Windows | `%APPDATA%/tabs-cli/` |
+| macOS | `~/Library/Application Support/tabscli/` |
+| Linux | `~/.local/share/tabscli/` |
+| Windows | `%APPDATA%/tabscli/` |
 
 ```
-tabs-cli/
+tabscli/
   sessions/
     work.json
     research.json
